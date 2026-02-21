@@ -22,13 +22,13 @@ mongoose
 app.use('/api/users', require('./src/routes/UserRoutes'));
 app.use('/api/auth', require('./src/routes/AuthRoutes'));
 
-if (
-  !process.env.CLOUDINARY_CLOUD_NAME
-  || !process.env.CLOUDINARY_API_KEY
-  || !process.env.CLOUDINARY_API_SECRET
-) {
-  throw new Error('Cloudinary environment variables are missing');
-}
+app.use((err, req, res) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    status: err.status || 'error',
+    message: err.message
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {

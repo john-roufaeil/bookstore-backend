@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
   user: {
@@ -23,10 +23,10 @@ const reviewSchema = new Schema({
     type: String,
     maxLength: 500
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 // unique review per user per book
-reviewSchema.index({user: 1, book: 1}, {unique: true});
+reviewSchema.index({ user: 1, book: 1 }, { unique: true });
 
 const Review = mongoose.model('Review', reviewSchema);
 

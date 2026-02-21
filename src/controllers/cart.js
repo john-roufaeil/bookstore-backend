@@ -1,5 +1,4 @@
-const { Cart } = require('../models');
-const Book = require('../models/book.model');
+const { Cart, Book } = require('../models');
 const { ApiResponse, ApiError } = require('../utils');
 
 const getCartItems = async (req, res) => {

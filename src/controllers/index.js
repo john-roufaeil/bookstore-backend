@@ -1,3 +1,3 @@
 const cart = require('./cart');
 
-module.exports = {cart};
+module.exports = { cart };

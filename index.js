@@ -21,7 +21,7 @@ if (
   throw new Error('Cloudinary environment variables are missing');
 }
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     status: err.status || 'error',

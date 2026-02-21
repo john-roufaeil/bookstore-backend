@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const authorSchema = new Schema({
   name: {
@@ -10,7 +10,7 @@ const authorSchema = new Schema({
   bio: {
     type: String
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Author = mongoose.model('Author', authorSchema);
 

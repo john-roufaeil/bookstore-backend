@@ -1,6 +1,6 @@
 const cors = require('cors');
 const express = require('express');
-const {getUploadSignature} = require('./src/controllers/upload');
+const { getUploadSignature } = require('./src/controllers/upload');
 const bookRoutes = require('./src/routes/book.routes');
 const cartRoutes = require('./src/routes/cart');
 const categoryRoutes = require('./src/routes/category.routes');

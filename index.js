@@ -21,6 +21,14 @@ if (
   throw new Error('Cloudinary environment variables are missing');
 }
 
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    status: err.status || 'error',
+    message: err.message
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`);

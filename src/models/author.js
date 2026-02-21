@@ -1,16 +1,19 @@
 const mongoose = require('mongoose');
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const authorSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    minlength: 2,
+    maxlength: 100
   },
   bio: {
-    type: String
+    type: String,
+    maxlength: 500
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Author = mongoose.model('Author', authorSchema);
 

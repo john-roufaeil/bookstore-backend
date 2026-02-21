@@ -9,7 +9,7 @@ const {
   deleteBook
 } = require('../controllers/book.controller');
 const validate = require('../middlewares/validate');
-const { createBookSchema, updateBookSchema } = require('../validations/book.validation');
+const {createBookSchema, updateBookSchema} = require('../validations/book.validation');
 // const {authenticate} = require('../middlewares/authenticate');
 // const {authorize} = require('../middlewares/authorize');
 

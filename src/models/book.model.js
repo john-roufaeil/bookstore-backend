@@ -33,7 +33,7 @@ const bookSchema = new mongoose.Schema({
   timestamps: true
 });
 
-bookSchema.index({name: 'text'});
-bookSchema.index({price: 1});
+bookSchema.index({ name: 'text' });
+bookSchema.index({ price: 1 });
 
 module.exports = mongoose.model('Book', bookSchema);

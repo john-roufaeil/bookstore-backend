@@ -58,6 +58,6 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'success'],
     default: 'pending'
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -1,6 +1,6 @@
-const User = require('../../models/usersModels');
-const ApiError = require('../../utils/apiError');
-const {verifyToken} = require('../modules/auth/auth.service');
+const User = require('../models/usersModels');
+const { verifyToken } = require('../modules/auth/auth.service');
+const ApiError = require('../utils/ApiError');
 
 const protect = async (req, res, next) => {
   if (

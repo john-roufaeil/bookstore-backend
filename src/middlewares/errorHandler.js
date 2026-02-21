@@ -14,7 +14,7 @@ const errorHandeler = (err, res) => {
   if (process.env.NODE_ENV === 'development') {
     devError(err, res);
   } else if (process.env.NODE_ENV === 'production') {
-    let error = {...err};
+    let error = { ...err };
     if (error.name === 'CastError') {
       handleCastErrorDB(error);
     } else if (error.code === 11000) {

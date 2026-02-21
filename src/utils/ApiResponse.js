@@ -1,9 +1,8 @@
 class ApiResponse {
-  constructor(statusCode, message, data = null) {
-    this.statusCode = statusCode;
-    this.message = message;
-    this.data = data;
-    this.success = statusCode >= 200 && statusCode < 400;
+  static success(res, statusCode, message, data, pagination = null) {
+    const body = { success: true, message, data };
+    if (pagination) body.pagination = pagination;
+    return res.status(statusCode).json(body);
   }
 }
 

@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 
 const generateToken = (user) =>
   jwt.sign(
-    {_id: user._id, email: user.email, role: user.role},
+    { _id: user._id, email: user.email, role: user.role },
     process.env.JWT_SECRET,
-    {expiresIn: process.env.JWT_EXPIRES_IN}
+    { expiresIn: process.env.JWT_EXPIRES_IN }
   );
 
 const verifyToken = (token) =>
   jwt.verify(token, process.env.JWT_SECRET);
 
-module.exports = {generateToken, verifyToken};
+module.exports = { generateToken, verifyToken };

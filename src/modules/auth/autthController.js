@@ -4,9 +4,9 @@ const ApiResponse = require('../../utils/apiResponse');
 const generateToken = require('./auth.service');
 
 const register = async (req, res) => {
-  const {email, firstName, lastName, dob, password} = req.body;
+  const { email, firstName, lastName, dob, password } = req.body;
 
-  if (await User.findOne({email}))
+  if (await User.findOne({ email }))
     throw new ApiError(409, 'Email already in use');
 
   const newUser = await User.create({
@@ -23,20 +23,20 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   if (!email || !password)
     throw new ApiError(400, 'please provide email and password');
 
-  const user = await User.findOne({email}).select('+password');
+  const user = await User.findOne({ email }).select('+password');
 
   if (!user || !(await user.correctPassword(password, user.password)))
     throw new ApiError(401, 'incorrect email or password');
 
   const token = generateToken(user);
 
-  ApiResponse.success(res, 200, 'User logged in successfully', {token});
+  ApiResponse.success(res, 200, 'User logged in successfully', { token });
 };
 
 // const logout = async (req, res) => {}
 
-module.exports = {register, login};
+module.exports = { register, login };

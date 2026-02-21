@@ -1,13 +1,13 @@
 const Author = require('../models/author');
 const Book = require('../models/book.model');
 const Category = require('../models/category.model');
-const {ApiResponse, ApiError} = require('../utils');
+const { ApiResponse, ApiError } = require('../utils');
 
 const getAllBooks = async (req, res) => {
-  const {search, category, author, minPrice, maxPrice, page = 1, limit = 10} = req.query;
+  const { search, category, author, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
 
   const query = {};
-  if (search) query.$text = {$search: search};
+  if (search) query.$text = { $search: search };
   if (category) query.category = category;
   if (author) query.author = author;
   if (minPrice || maxPrice) {
@@ -60,7 +60,7 @@ const updateBook = async (req, res) => {
     if (!category) throw new ApiError(404, 'Category not found');
   }
 
-  const book = await Book.findByIdAndUpdate(req.params.id, req.body, {returnDocument: 'after'}).populate('author category');
+  const book = await Book.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' }).populate('author category');
   if (!book) throw new ApiError(404, 'Book not found');
 
   res.json(new ApiResponse(200, 'Book updated', book));

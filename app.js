@@ -11,9 +11,6 @@ app.use(cors());
 app.use(express.json());
 app.use(httpLogger);
 
-app.use('/api/categories', categoryRoutes);
-app.use('/api/books', bookRoutes);
-app.use('/api/cart', cartRoutes);
-app.get('/api/upload/signature', getUploadSignature);
+app.use('/api', routes);
 
 module.exports = app;

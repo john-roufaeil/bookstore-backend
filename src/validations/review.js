@@ -5,6 +5,6 @@ const reviewSchema = joi.object({
   bookId: joi.string().required(),
   rating: joi.number().integer().min(1).max(5).required(),
   comment: joi.string().max(500).optional()
-});
+}).unknown(false);
 
 module.exports = reviewSchema;

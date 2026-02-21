@@ -3,8 +3,8 @@ const cloudinary = require('../config/cloudinary');
 const { ApiResponse, ApiError } = require('../utils');
 
 const getUploadSignature = async (req, res) => {
-  const timestamp = Math.round(Date.now() / 1000);
-  const folder = 'online-bookstore';
+  const timestamp = Math.floor(Date.now() / 1000);
+  const folder = 'book-covers';
 
   const signature = cloudinary.utils.api_sign_request(
     { timestamp, folder },

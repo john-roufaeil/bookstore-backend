@@ -41,16 +41,7 @@ const userSchema = new mongoose.Schema(
       maxlength: 50,
       select: false
     },
-    passwordConfirm: {
-      type: String,
-      required: [true, 'confirming password is required'],
-      validate: {
-        validator(el) {
-          return el === this.password;
-        },
-        message: 'passwords are not the same'
-      }
-    },
+    passwordChangedAt: Date,
     isVerified: {
       type: Boolean,
       default: false
@@ -66,14 +57,26 @@ const userSchema = new mongoose.Schema(
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
   next();
 });
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = Number.parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  return false;
+};
+
 userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+// we pass the user password here and i don't use this.password bec. passowrd is set to select = false , and also the method is defined to be instance method to be definedfor all instance document
 
 module.exports = mongoose.model('User', userSchema);

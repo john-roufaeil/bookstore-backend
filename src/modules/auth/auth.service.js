@@ -8,4 +8,7 @@ const generateToken = (user) =>
     {expiresIn: process.env.JWT_EXPIRES_IN}
   );
 
-module.exports = {generateToken};
+const verifyToken = (token) =>
+  jwt.verify(token, process.env.JWT_SECRET);
+
+module.exports = {generateToken, verifyToken};

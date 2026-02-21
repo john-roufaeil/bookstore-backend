@@ -1,7 +1,7 @@
 const Author = require('../models/author');
 const Book = require('../models/book.model');
 const Category = require('../models/category.model');
-const { createBookSchema, updateBookSchema } = require('../validations/book.validation');
+const { ApiResponse, ApiError } = require('../utils');
 
 const getAllBooks = async (req, res) => {
   const { search, category, author, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
@@ -24,68 +24,60 @@ const getAllBooks = async (req, res) => {
     .skip(skip)
     .limit(Number(limit));
 
-  res.status(200).json({
-    success: true,
-    message: 'Books fetched',
-    data: books,
+  res.json(new ApiResponse(200, 'Books fetched', {
+    books,
     pagination: {
       total,
       page: Number(page),
       limit: Number(limit),
       totalPages: Math.ceil(total / limit)
     }
-  });
+  }));
 };
 
 const createBook = async (req, res) => {
-  const { error, value } = createBookSchema.validate(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
+  const author = await Author.findById(req.body.author);
+  if (!author) throw new ApiError(404, 'Author not found');
 
-  const author = await Author.findById(value.author);
-  if (!author) return res.status(404).json({ success: false, message: 'Author not found' });
-
-  if (value.category) {
-    const category = await Category.findById(value.category);
-    if (!category) return res.status(404).json({ success: false, message: 'Category not found' });
+  if (req.body.category) {
+    const category = await Category.findById(req.body.category);
+    if (!category) throw new ApiError(404, 'Category not found');
   }
 
-  const book = await Book.create(value);
+  const book = await Book.create(req.body);
   const populated = await book.populate('author category');
-  res.status(201).json({ success: true, message: 'Book created', data: populated });
+  res.status(201).json(new ApiResponse(201, 'Book created', populated));
 };
 
 const updateBook = async (req, res) => {
-  const { error, value } = updateBookSchema.validate(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-
-  if (value.author) {
-    const author = await Author.findById(value.author);
-    if (!author) return res.status(404).json({ success: false, message: 'Author not found' });
+  if (req.body.author) {
+    const author = await Author.findById(req.body.author);
+    if (!author) throw new ApiError(404, 'Author not found');
   }
 
-  if (value.category) {
-    const category = await Category.findById(value.category);
-    if (!category) return res.status(404).json({ success: false, message: 'Category not found' });
+  if (req.body.category) {
+    const category = await Category.findById(req.body.category);
+    if (!category) throw new ApiError(404, 'Category not found');
   }
 
-  const book = await Book.findByIdAndUpdate(req.params.id, value, { new: true }).populate('author category');
-  if (!book) return res.status(404).json({ success: false, message: 'Book not found' });
+  const book = await Book.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' }).populate('author category');
+  if (!book) throw new ApiError(404, 'Book not found');
 
-  res.status(200).json({ success: true, message: 'Book updated', data: book });
+  res.json(new ApiResponse(200, 'Book updated', book));
 };
 
 const deleteBook = async (req, res) => {
   const book = await Book.findByIdAndDelete(req.params.id);
-  if (!book) return res.status(404).json({ success: false, message: 'Book not found' });
+  if (!book) throw new ApiError(404, 'Book not found');
 
-  res.status(200).json({ success: true, message: 'Book deleted' });
+  res.json(new ApiResponse(200, 'Book deleted'));
 };
 
 const getBook = async (req, res) => {
   const book = await Book.findById(req.params.id).populate('author').populate('category');
-  if (!book) return res.status(404).json({ success: false, message: 'Book not found' });
+  if (!book) throw new ApiError(404, 'Book not found');
 
-  res.status(200).json({ success: true, message: 'Book fetched', data: book });
+  res.json(new ApiResponse(200, 'Book fetched', book));
 };
 
 module.exports = {

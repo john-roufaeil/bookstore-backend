@@ -1,15 +1,15 @@
-const author = require('./author');
-const book = require('./book');
-const cart = require('./cart');
-const category = require('./category');
-const order = require('./order');
-const review = require('./review');
+const Author = require('./author');
+const Book = require('./book');
+const Cart = require('./cart');
+const Category = require('./category');
+const Order = require('./order');
+const Review = require('./review');
 
 module.exports = {
-  author,
-  book,
-  cart,
-  category,
-  order,
-  review
+  Author,
+  Book,
+  Cart,
+  Category,
+  Order,
+  Review
 };

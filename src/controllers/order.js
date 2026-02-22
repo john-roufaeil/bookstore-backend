@@ -3,7 +3,7 @@ const orderPlacement = require('../services/orderService');
 const { ApiResponse, ApiError, paginate } = require('../utils');
 
 const getMyOrders = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user._id;
   const { page = 1, limit = 10 } = req.query;
 
   const result = await paginate(
@@ -18,7 +18,7 @@ const getMyOrders = async (req, res) => {
 };
 
 const placeOrder = async (req, res) => {
-  const { userId } = req.body;
+  const userId = req.user._id;
   const { shippingDetails, paymentMethod } = req.body;
 
   const order = await orderPlacement(userId, shippingDetails, paymentMethod);

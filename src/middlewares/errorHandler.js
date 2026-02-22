@@ -1,5 +1,5 @@
 const process = require('node:process');
-const AppError = require('../utils/apiError');
+const ApiError = require('../utils/ApiError');
 const {
   devError,
   productionError,
@@ -22,9 +22,9 @@ const errorHandeler = (err, res) => {
     } else if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error);
     } else if (error.name === 'JsonWebTokenError') {
-      error = new AppError('Invalid token. Please log in again!', 401);
+      error = new ApiError('Invalid token. Please log in again!', 401);
     } else if (error.name === 'TokenExpiredError') {
-      error = new AppError('Your token has expired! Please log in again.', 401);
+      error = new ApiError('Your token has expired! Please log in again.', 401);
     }
 
     productionError(error, res);

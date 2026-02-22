@@ -37,6 +37,10 @@ const login = async (req, res) => {
   ApiResponse.success(res, 200, 'User logged in successfully', { token });
 };
 
+const logout = async (req, res) => {
+  ApiResponse.success(res, 200, 'User logged out successfully');
+};
+
 const getUserProfile = async (req, res) => {
   const user = await User.findById(req.user._id);
   if (!user) throw new ApiError(404, 'user not found');
@@ -51,4 +55,4 @@ const updateUserProfile = async (req, res) => {
   if (!user) throw new ApiError(404, 'user not found');
   ApiResponse.success(res, 200, 'User updated successfully', user);
 };
-module.exports = { register, login, getUserProfile, updateUserProfile };
+module.exports = { register, login, logout, getUserProfile, updateUserProfile };

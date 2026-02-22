@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, _next) => {
   err.status = err.status || 'error';
   if (process.env.NODE_ENV === 'development') {
     devError(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
+  } else {
     let error = { ...err };
     if (error.name === 'CastError') {
       error = handleCastErrorDB(error);

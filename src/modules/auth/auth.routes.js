@@ -3,7 +3,6 @@ const authenticate = require('../../middlewares/authenticate');
 const {
   register,
   login,
-  logout,
   getUserProfile,
   updateUserProfile
 } = require('./auth.controller');
@@ -18,7 +17,6 @@ const router = Router();
 
 router.post('/register', validate(registerSchema), register);
 router.post('/login', validate(loginSchema), login);
-router.post('/logout', authenticate, logout);
 router.get('/me', authenticate, getUserProfile);
 router.patch(
   '/profile',

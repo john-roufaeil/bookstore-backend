@@ -6,9 +6,9 @@ const {
   createCategory,
   updateCategory,
   deleteCategory
-} = require('../controllers/category.controller');
+} = require('../controllers/category');
 const validate = require('../middlewares/validate');
-const { createCategorySchema, updateCategorySchema } = require('../validations/category.validation');
+const { createCategorySchema, updateCategorySchema } = require('../validations/category');
 // const {authenticate} = require('../middlewares/authenticate');
 // const {authorize} = require('../middlewares/authorize');
 

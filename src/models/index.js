@@ -1,11 +1,11 @@
+const Book = require('./book');
 const Cart = require('./cart');
+const Category = require('./category');
 const Order = require('./order');
-const Book = require('./book.model');
-const Category = require('./category.model');
 
 module.exports = {
+  Book,
   Cart,
   Order,
-  Book,
   Category
 };

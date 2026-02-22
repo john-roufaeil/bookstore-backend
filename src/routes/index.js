@@ -5,9 +5,10 @@ const router = express.Router();
 
 router.get('/cloudinary-signature', getUploadSignature);
 router.use('/cart', require('./cart'));
+router.use('/orders', require('./order'));
 // router.use('/authors', require('./author'));
 // router.use('/reviews', require('./review'));
-router.use('/categories', require('./category.routes'));
-router.use('/books', require('./book.routes'));
+router.use('/categories', require('./category'));
+router.use('/books', require('./book'));
 
 module.exports = router;

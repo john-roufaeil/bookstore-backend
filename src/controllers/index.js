@@ -1,5 +1,5 @@
-const book = require('./book.controller');
+const book = require('./book');
 const cart = require('./cart');
-const category = require('./category.controller');
+const category = require('./category');
 
 module.exports = { cart, book, category };

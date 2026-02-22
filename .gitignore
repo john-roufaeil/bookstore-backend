@@ -142,3 +142,8 @@ vite.config.ts.timestamp-*
 .DS_Store
 .vscode/
 .idea/
+
+# Reference files
+bookstore-8day-plan.md
+khaled-guide.md
+bookstore-erd.drawio

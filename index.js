@@ -19,8 +19,7 @@ mongoose
   .catch((err) => {
     console.error('Failed to connect to DB, ', err.message);
   });
-app.use('/api/users', require('./src/routes/UserRoutes'));
-app.use('/api/auth', require('./src/routes/AuthRoutes'));
+app.use('/api/auth', require('./src/modules/auth/auth.routes'));
 
 app.use((err, req, res) => {
   const statusCode = err.statusCode || 500;

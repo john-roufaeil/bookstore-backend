@@ -1,14 +1,5 @@
 const Joi = require('joi');
 
-const validate = (schema) => (req, res, next) => {
-  const { error } = schema.validate(req.body, { abortEarly: false });
-  if (!error) return next();
-  const errors = error.details.map((d) => d.message);
-  return res
-    .status(400)
-    .json({ success: false, message: 'Validation failed', errors });
-};
-
 const registerSchema = Joi.object({
   email: Joi.string().email().required(),
   firstName: Joi.string().min(2).max(50).required(),
@@ -37,4 +28,4 @@ const updateProfileSchema = Joi.object({
   dob: Joi.date().max('now')
 }).min(1);
 
-module.exports = { validate, registerSchema, loginSchema, updateProfileSchema };
+module.exports = { registerSchema, loginSchema, updateProfileSchema };

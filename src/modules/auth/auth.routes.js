@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const authenticate = require('../../middlewares/authenticate');
+const validate = require('../../middlewares/validate');
 const {
   register,
   login,
@@ -8,7 +9,6 @@ const {
   updateUserProfile
 } = require('./auth.controller');
 const {
-  validate,
   registerSchema,
   loginSchema,
   updateProfileSchema

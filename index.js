@@ -19,16 +19,12 @@ mongoose
   .catch((err) => {
     console.error('Failed to connect to DB, ', err.message);
   });
-app.use('/api/users', require('./src/routes/UserRoutes'));
-app.use('/api/auth', require('./src/routes/AuthRoutes'));
+const errorHandler = require('./src/middlewares/errorHandler');
 
-app.use((err, req, res) => {
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
-    status: err.status || 'error',
-    message: err.message
-  });
-});
+app.use('/api/auth', require('./src/modules/auth/auth.routes'));
+
+// Error handler — must be the last middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {

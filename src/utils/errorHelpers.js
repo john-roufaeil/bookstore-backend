@@ -1,7 +1,7 @@
-const AppError = require('./apiError');
+const ApiError = require('./ApiError');
 
 const devError = (err, res) => {
-  return res.staus(err.statusCode).json({
+  return res.status(err.statusCode).json({
     status: err.status,
     error: err,
     message: err.message,
@@ -10,13 +10,13 @@ const devError = (err, res) => {
 };
 const productionError = (err, res) => {
   if (err.isOperational) {
-    return res.staus(err.statusCode).json({
+    return res.status(err.statusCode).json({
       status: err.status,
       message: err.message
     });
   } else {
     console.error('error', err);
-    return res.staus(500).json({
+    return res.status(500).json({
       status: 'error',
       message: 'something went wrong'
     });
@@ -24,19 +24,19 @@ const productionError = (err, res) => {
 };
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
-  return new AppError(message, 400);
+  return new ApiError(400, message);
 };
 
 const handleDuplicateFieldsDB = (err) => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  const message = `Duplicate field value: ${value}. Please use another value!`;
-  return new AppError(message, 400);
+  const value = err.keyValue ? Object.values(err.keyValue)[0] : 'unknown';
+  const message = `Duplicate field value: "${value}". Please use another value.`;
+  return new ApiError(409, message);
 };
 
 const handleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors).map((el) => el.message);
   const message = `Invalid input data. ${errors.join('. ')}`;
-  return new AppError(message, 400);
+  return new ApiError(400, message);
 };
 
 module.exports = {

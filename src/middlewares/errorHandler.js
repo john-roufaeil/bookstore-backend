@@ -1,5 +1,5 @@
 const process = require('node:process');
-const AppError = require('../utils/apiError');
+const ApiError = require('../utils/ApiError');
 const {
   devError,
   productionError,
@@ -8,26 +8,26 @@ const {
   handleValidationErrorDB
 } = require('../utils/errorHelpers');
 
-const errorHandeler = (err, res) => {
+const errorHandler = (err, req, res, _next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
   if (process.env.NODE_ENV === 'development') {
     devError(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
+  } else {
     let error = { ...err };
     if (error.name === 'CastError') {
-      handleCastErrorDB(error);
+      error = handleCastErrorDB(error);
     } else if (error.code === 11000) {
-      handleDuplicateFieldsDB(error);
+      error = handleDuplicateFieldsDB(error);
     } else if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error);
     } else if (error.name === 'JsonWebTokenError') {
-      error = new AppError('Invalid token. Please log in again!', 401);
+      error = new ApiError(401, 'Invalid token. Please log in again!');
     } else if (error.name === 'TokenExpiredError') {
-      error = new AppError('Your token has expired! Please log in again.', 401);
+      error = new ApiError(401, 'Your token has expired! Please log in again.');
     }
 
     productionError(error, res);
   }
 };
-module.exports = errorHandeler;
+module.exports = errorHandler;

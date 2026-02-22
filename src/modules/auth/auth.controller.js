@@ -19,7 +19,9 @@ const register = async (req, res) => {
   const userObj = newUser.toObject();
   delete userObj.password;
 
-  ApiResponse.success(res, 201, 'User created successfully', userObj);
+  res
+    .status(201)
+    .json(new ApiResponse(201, 'User created successfully', userObj));
 };
 
 const login = async (req, res) => {
@@ -34,17 +36,17 @@ const login = async (req, res) => {
 
   const token = generateToken(user);
 
-  ApiResponse.success(res, 200, 'User logged in successfully', { token });
+  res.json(new ApiResponse(200, 'User logged in successfully', { token }));
 };
 
 const logout = async (req, res) => {
-  ApiResponse.success(res, 200, 'User logged out successfully');
+  res.json(new ApiResponse(200, 'User logged out successfully'));
 };
 
 const getUserProfile = async (req, res) => {
   const user = await User.findById(req.user._id);
   if (!user) throw new ApiError(404, 'user not found');
-  ApiResponse.success(res, 200, 'User retrieved successfully', user);
+  res.json(new ApiResponse(200, 'User retrieved successfully', user));
 };
 
 const updateUserProfile = async (req, res) => {
@@ -53,6 +55,6 @@ const updateUserProfile = async (req, res) => {
     runValidators: true
   });
   if (!user) throw new ApiError(404, 'user not found');
-  ApiResponse.success(res, 200, 'User updated successfully', user);
+  res.json(new ApiResponse(200, 'User updated successfully', user));
 };
 module.exports = { register, login, logout, getUserProfile, updateUserProfile };

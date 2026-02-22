@@ -19,7 +19,9 @@ const register = async (req, res) => {
   const userObj = newUser.toObject();
   delete userObj.password;
 
-  res.json(new ApiResponse(201, 'User created successfully', userObj));
+  res
+    .status(201)
+    .json(new ApiResponse(201, 'User created successfully', userObj));
 };
 
 const login = async (req, res) => {

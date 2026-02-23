@@ -1,6 +1,4 @@
-const Author = require('../models/author');
-const Book = require('../models/book.model');
-const Category = require('../models/category.model');
+const { Author, Book, Category } = require('../models');
 const { ApiResponse, ApiError } = require('../utils');
 
 const getAllBooks = async (req, res) => {

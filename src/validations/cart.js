@@ -1,18 +1,21 @@
 const joi = require('joi');
 
-const addToCart = joi.object({
-  userId: joi.string().required(),
+const addItemSchema = joi.object({
   bookId: joi.string().required(),
   quantity: joi.number().integer().min(1).default(1)
 });
 
-const updateQuantity = joi.object({
-  userId: joi.string().required(),
+const updateQuantitySchema = joi.object({
   bookId: joi.string().required(),
   action: joi.string().valid('increment', 'decrement').required()
 });
 
+const removeItemSchema = joi.object({
+  bookId: joi.string().required()
+});
+
 module.exports = {
-  addToCart,
-  updateQuantity
+  addItemSchema,
+  updateQuantitySchema,
+  removeItemSchema
 };

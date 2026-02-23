@@ -2,7 +2,7 @@ const { Cart, Book } = require('../models');
 const { ApiResponse, ApiError } = require('../utils');
 
 const getCartItems = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user._id;
   const cart = await Cart.findOne({ userId }).populate('books.bookId', 'name price coverImage stock');
 
   if (!cart || cart.books.length === 0) {
@@ -14,7 +14,8 @@ const getCartItems = async (req, res) => {
 };
 
 const addItem = async (req, res) => {
-  const { userId, bookId, quantity = 1 } = req.body;
+  const userId = req.user._id;
+  const { bookId, quantity = 1 } = req.body;
 
   const book = await Book.findById(bookId);
   if (!book) {
@@ -41,7 +42,8 @@ const addItem = async (req, res) => {
 };
 
 const removeItem = async (req, res) => {
-  const { userId, bookId } = req.body;
+  const userId = req.user._id;
+  const { bookId } = req.body;
   const cart = await Cart.findOneAndUpdate(
     { userId },
     { $pull: { books: { bookId } } },
@@ -58,7 +60,8 @@ const removeItem = async (req, res) => {
 };
 
 const updateItemQuantity = async (req, res) => {
-  const { userId, bookId, action } = req.body;
+  const userId = req.user._id;
+  const { bookId, action } = req.body;
 
   const cart = await Cart.findOne({ userId });
   if (!cart) {

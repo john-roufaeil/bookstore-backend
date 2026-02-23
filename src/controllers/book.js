@@ -1,5 +1,5 @@
 const { Author, Book, Category } = require('../models');
-const { ApiResponse, ApiError } = require('../utils');
+const { ApiResponse, ApiError, paginate } = require('../utils');
 
 const getAllBooks = async (req, res) => {
   const { search, category, author, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
@@ -14,23 +14,15 @@ const getAllBooks = async (req, res) => {
     if (maxPrice) query.price.$lte = Number(maxPrice);
   }
 
-  const skip = (page - 1) * limit;
-  const total = await Book.countDocuments(query);
-  const books = await Book.find(query)
-    .populate('author', 'name')
-    .populate('category', 'name')
-    .skip(skip)
-    .limit(Number(limit));
+  const { data: books, pagination } = await paginate(
+    Book,
+    query,
+    { populate: 'author category', sort: { name: 1 } },
+    Number(page),
+    Number(limit)
+  );
 
-  res.json(new ApiResponse(200, 'Books fetched', {
-    books,
-    pagination: {
-      total,
-      page: Number(page),
-      limit: Number(limit),
-      totalPages: Math.ceil(total / limit)
-    }
-  }));
+  res.json(new ApiResponse(200, 'Books fetched', { books, pagination }));
 };
 
 const createBook = async (req, res) => {

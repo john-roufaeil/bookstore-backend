@@ -1,5 +1,5 @@
 const { Order } = require('../models');
-const orderPlacement = require('../services/orderService');
+const orderPlacement = require('../services/order');
 const { ApiResponse, ApiError, paginate } = require('../utils');
 
 const getMyOrders = async (req, res) => {

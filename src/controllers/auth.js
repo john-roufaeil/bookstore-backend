@@ -1,7 +1,7 @@
-const User = require('../../models/usersModels');
-const ApiError = require('../../utils/ApiError');
-const ApiResponse = require('../../utils/ApiResponse');
-const { generateToken } = require('./auth.service');
+const User = require('../models/user');
+const { generateToken } = require('../services/auth');
+const ApiError = require('../utils/ApiError');
+const ApiResponse = require('../utils/ApiResponse');
 
 const register = async (req, res) => {
   const { email, firstName, lastName, dob, password } = req.body;

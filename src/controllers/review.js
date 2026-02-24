@@ -1,5 +1,11 @@
+const { restrictTo } = require('../middlewares');
 const { Review, Book, Order } = require('../models');
-const { ApiResponse, ApiError } = require('../utils');
+const { ApiResponse, ApiError, paginate } = require('../utils');
+
+const isAllowedToModify = (userId, reviewUserId) => {
+  if (restrictTo('admin')) return true;
+  return userId.toString() === reviewUserId.toString();
+};
 
 const createReview = async (req, res) => {
   const userId = req.user._id;
@@ -32,24 +38,30 @@ const createReview = async (req, res) => {
 
 const getBookReviews = async (req, res) => {
   const { bookId } = req.params;
+
   const book = await Book.findById(bookId);
-  if (!book) {
-    throw new ApiError(404, 'Book not found');
-  }
+  if (!book) throw new ApiError(404, 'Book not found');
 
-  const reviews = await Review
-    .find({ bookId })
-    .populate('userId', 'firstName lastName')
-    .sort({ createdAt: -1 });
+  const { data: reviews, pagination } = await paginate(
+    Review,
+    { bookId },
+    {
+      sort:
+        { createdAt: -1 },
+      populate: 'userId',
+      select: 'rating comment userId createdAt'
+    }
+  );
 
-  const averageRating = reviews.length > 0
-    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
-    : null;
+  const ratings = await Review.find({ bookId }).select('rating').lean();
+  const averageRating = ratings.length > 0
+    ? (ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length).toFixed(1)
+    : 0;
 
   return res.json(new ApiResponse(
     200,
     'Reviews fetched successfully',
-    { reviews, averageRating }
+    { reviews, averageRating, pagination }
   ));
 };
 
@@ -58,18 +70,31 @@ const deleteReview = async (req, res) => {
   const userId = req.user._id;
 
   const review = await Review.findById(id);
-  if (!review) {
-    throw new ApiError(404, 'Review not found');
-  }
-  if (review.userId.toString() !== userId.toString()) {
-    throw new ApiError(403, 'You are not authorized to delete this review');
-  }
+  if (!review) throw new ApiError(404, 'Review not found');
+  if (!isAllowedToModify(userId, review.userId)) throw new ApiError(403, 'Unauthorized to delete this review');
+
   await Review.findByIdAndDelete(id);
   return res.json(new ApiResponse(200, 'Review deleted successfully'));
+};
+
+const updateReview = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user._id;
+  const { rating, comment } = req.body;
+
+  const review = await Review.findById(id);
+  if (!review) throw new ApiError(404, 'Review not found');
+  if (!isAllowedToModify(userId, review.userId)) throw new ApiError(403, 'Unauthorized to update this review');
+
+  review.rating = rating;
+  review.comment = comment;
+  await review.save();
+  return res.json(new ApiResponse(200, 'Review updated successfully', review));
 };
 
 module.exports = {
   createReview,
   getBookReviews,
-  deleteReview
+  deleteReview,
+  updateReview
 };

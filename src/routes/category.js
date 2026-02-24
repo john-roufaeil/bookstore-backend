@@ -7,14 +7,12 @@ const {
   updateCategory,
   deleteCategory
 } = require('../controllers/category');
-const validate = require('../middlewares/validate');
+const { protect, restrictTo, validate } = require('../middlewares');
 const { createCategorySchema, updateCategorySchema } = require('../validations/category');
-// const {authenticate} = require('../middlewares/authenticate');
-// const {authorize} = require('../middlewares/authorize');
 
 router.get('/', getAllCategories);
-router.post('/', validate(createCategorySchema), createCategory);
-router.patch('/:id', validate(updateCategorySchema), updateCategory);
-router.delete('/:id', deleteCategory);
+router.post('/', protect, restrictTo('admin'), validate(createCategorySchema), createCategory);
+router.patch('/:id', protect, restrictTo('admin'), validate(updateCategorySchema), updateCategory);
+router.delete('/:id', protect, restrictTo('admin'), deleteCategory);
 
 module.exports = router;

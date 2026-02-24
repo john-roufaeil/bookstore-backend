@@ -1,6 +1,6 @@
 const cors = require('cors');
 const express = require('express');
-const { httpLogger } = require('./src/middlewares/logger');
+const { httpLogger, errorHandler } = require('./src/middlewares');
 const routes = require('./src/routes');
 
 const app = express();
@@ -9,5 +9,7 @@ app.use(express.json());
 app.use(httpLogger);
 
 app.use('/api', routes);
+
+app.use(errorHandler);
 
 module.exports = app;

@@ -17,7 +17,7 @@ router.post(
   author.createAuthor
 );
 
-router.put(
+router.patch(
   '/:id',
   protect,
   restrictTo('admin'),

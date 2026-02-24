@@ -5,7 +5,7 @@ const { updateReviewSchema } = require('../validations/review');
 
 const router = express.Router();
 
-router.delete('/:id', protect, review.deleteReview); // TODO: admin or owner
-router.patch('/:id', protect, validate(updateReviewSchema), review.updateReview); // TODO: admin or owner
+router.delete('/:id', protect, review.deleteReview);
+router.patch('/:id', protect, validate(updateReviewSchema), review.updateReview);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const requests = new Map();
-const WINDOW_TIME = 60 * 1000 * 10; // 10 minutes
+const WINDOW_TIME = 60 * 1000; // 1 minute
 const MAX_REQUESTS = 100;
 
 setInterval(() => {

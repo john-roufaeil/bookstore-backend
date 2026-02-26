@@ -21,13 +21,26 @@ const findAllAuthors = async (req, res) => {
     {},
     { sort: { name: 1 } }
   );
-  return res.json(new ApiResponse(200, 'Authors fetched successfully', { authors, pagination }));
+
+  const authorsWithBookCount = await Promise.all(
+    authors.map(async (author) => {
+      const bookCount = await Book.countDocuments({ author: author._id });
+      return {
+        ...author.toObject(),
+        bookCount
+      };
+    })
+  );
+
+  return res.json(new ApiResponse(200, 'Authors fetched successfully', { authors: authorsWithBookCount, pagination }));
 };
 
 const findAuthorById = async (req, res) => {
   const { id } = req.params;
-  const author = await Author.findById(id);
+  let author = await Author.findById(id);
   if (!author) throw new ApiError(404, 'Author not found');
+  const books = await Book.find({ author: id });
+  author = { ...author.toObject(), bookCount: books.length, books };
   return res.json(new ApiResponse(200, 'Author fetched successfully', author));
 };
 

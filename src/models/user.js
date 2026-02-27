@@ -1,4 +1,4 @@
-  const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -7,38 +7,38 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       index: true,
-      required: [true, 'email is required'],
+      required: [true, 'Email is required'],
       unique: true,
       lowercase: true,
-      validate: [validator.isEmail, 'please provide a valid email']
+      validate: [validator.isEmail, 'Please provide a valid email']
     },
     firstName: {
       type: String,
-      required: [true, 'first name is required'],
-      minlength: 2,
-      maxlength: 25,
+      required: [true, 'First name is required'],
+      minlength: [2, 'First name must be at least 2 characters'],
+      maxlength: [25, 'First name cannot exceed 25 characters'],
       trim: true,
       lowercase: true
     },
     lastName: {
       type: String,
-      required: [true, 'last name is required'],
-      minlength: 2,
-      maxlength: 25,
+      required: [true, 'Last name is required'],
+      minlength: [2, 'Last name must be at least 2 characters'],
+      maxlength: [25, 'Last name cannot exceed 25 characters'],
       trim: true,
       lowercase: true
     },
     dob: {
       type: Date,
-      required: [true, 'date of birth is required'],
-      min: '1900-01-01',
-      max: Date.now()
+      required: [true, 'Date of birth is required'],
+      min: ['1900-01-01', 'Birth date must be after 01-01-1900'],
+      max: [Date.now(), 'Birth date cannot be in the future']
     },
     password: {
       type: String,
-      required: [true, 'password is required'],
-      minlength: 8,
-      maxlength: 50,
+      required: [true, 'Password is required'],
+      minlength: [8, 'Password must be at least 8 characters'],
+      maxlength: [50, 'Password cannot exceed 50 characters'],
       select: false
     },
     passwordChangedAt: Date,
@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema(
       default: 'user'
     }
   },
-  { timestamps: true }
+  {timestamps: true}
 );
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) return;

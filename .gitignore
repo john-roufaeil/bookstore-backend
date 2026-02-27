@@ -147,3 +147,5 @@ vite.config.ts.timestamp-*
 bookstore-8day-plan.md
 khaled-guide.md
 bookstore-erd.drawio
+.vercel
+.npmrc

@@ -3,7 +3,7 @@ const { ApiResponse, ApiError } = require('../utils');
 
 const getCartItems = async (req, res) => {
   const userId = req.user._id;
-  const cart = await Cart.findOne({ userId }).populate('books.bookId', 'name price coverImage stock');
+  const cart = await Cart.findOne({ userId }).populate({ path: 'books.bookId', select: 'name price coverImage stock author', populate: { path: 'author', select: 'name' } });
 
   if (!cart || cart.books.length === 0) {
     return res.json(new ApiResponse(200, 'Cart is empty', { books: [], totalPrice: 0 }));
@@ -35,7 +35,7 @@ const addItem = async (req, res) => {
   }
 
   await cart.save();
-  await cart.populate('books.bookId', 'name price coverImage stock');
+  await cart.populate({ path: 'books.bookId', select: 'name price coverImage stock author', populate: { path: 'author', select: 'name' } });
 
   const totalPrice = cart.books.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0);
   return res.json(new ApiResponse(201, 'Book added to cart successfully', { cart, totalPrice }));
@@ -87,7 +87,7 @@ const updateItemQuantity = async (req, res) => {
   }
   await cart.save();
 
-  const updatedCart = await Cart.findOne({ userId }).populate('books.bookId', 'name price coverImage stock');
+  const updatedCart = await Cart.findOne({ userId }).populate({ path: 'books.bookId', select: 'name price coverImage stock author', populate: { path: 'author', select: 'name' } });
   const totalPrice = updatedCart.books.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0);
   return res.json(new ApiResponse(200, `Quantity ${action}ed successfully`, { cart: updatedCart, totalPrice }));
 };

@@ -30,7 +30,15 @@ const bookSchema = new mongoose.Schema({
     default: null
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+bookSchema.virtual('status').get(function () {
+  if (this.stock > 10) return 'In Stock';
+  if (this.stock > 0) return 'Low Stock';
+  return 'Out of Stock';
 });
 
 bookSchema.index({ name: 'text' });

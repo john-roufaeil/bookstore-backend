@@ -21,7 +21,7 @@ mongoose
   });
 const errorHandler = require('./src/middlewares/errorHandler');
 
-app.use('/api/auth', require('./src/routes/auth.routes'));
+app.use('/api/auth', require('./src/routes/auth'));
 
 // Error handler — must be the last middleware
 app.use(errorHandler);

@@ -1,12 +1,35 @@
 const express = require('express');
 const { author } = require('../controllers');
-const validate = require('../middlewares/validate');
+const { protect, restrictTo, validate } = require('../middlewares');
 const { createAuthorSchema, updateAuthorSchema } = require('../validations/author');
 
 const router = express.Router();
 
 router.get('/', author.findAllAuthors);
-router.post('/', validate(createAuthorSchema), author.createAuthor); // TODO: Add auth
-router.put('/:id', validate(updateAuthorSchema), author.updateAuthor); // TODO: Add auth
+
+router.get('/:id', author.findAuthorById);
+
+router.post(
+  '/',
+  protect,
+  restrictTo('admin'),
+  validate(createAuthorSchema),
+  author.createAuthor
+);
+
+router.patch(
+  '/:id',
+  protect,
+  restrictTo('admin'),
+  validate(updateAuthorSchema),
+  author.updateAuthor
+);
+
+router.delete(
+  '/:id',
+  protect,
+  restrictTo('admin'),
+  author.deleteAuthor
+);
 
 module.exports = router;

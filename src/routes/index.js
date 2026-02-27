@@ -9,5 +9,6 @@ router.use('/books', require('./book'));
 router.use('/authors', require('./author'));
 router.use('/reviews', require('./review'));
 router.use('/cloudinary-signature', require('./cloudinary'));
+router.use('/auth', require('./auth'));
 
 module.exports = router;

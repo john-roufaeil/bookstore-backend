@@ -11,8 +11,7 @@ const placeOrderSchema = joi.object({
 });
 
 const updateOrderStatusSchema = joi.object({
-  status: joi.string().valid('processing', 'out_for_delivery', 'delivered').required(),
-  paymentStatus: joi.string().valid('pending', 'success')
+  status: joi.string().valid('out_for_delivery', 'delivered').required()
 });
 
 module.exports = {

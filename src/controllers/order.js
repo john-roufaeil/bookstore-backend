@@ -49,21 +49,21 @@ const StateTransition = {
 // Admin only
 const updateOrderStatus = async (req, res) => {
   const { id } = req.params;
-  const { status, paymentStatus } = req.body;
+  const { status } = req.body;
 
   const order = await Order.findById(id);
   if (!order) throw new ApiError(404, 'Order not found');
 
-  if (status) {
-    if (StateTransition[order.status] !== status) {
-      throw new ApiError(400, `Can't change order status from '${order.status}' to '${status}'`);
-    }
-    order.status = status;
+  if (StateTransition[order.status] !== status) {
+    throw new ApiError(400, `Can't change order status from '${order.status}' to '${status}'`);
+  }
+  order.status = status;
+
+  if (status === 'delivered') {
+    order.paymentStatus = 'success';
   }
 
-  if (paymentStatus) order.paymentStatus = paymentStatus;
   await order.save();
-
   return res.json(new ApiResponse(200, 'Order updated successfully', order));
 };
 

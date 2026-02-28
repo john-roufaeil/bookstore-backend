@@ -68,6 +68,19 @@ const getBookReviews = async (req, res) => {
   ));
 };
 
+const getAllReviews = async (req, res) => {
+  const { data: reviews, pagination } = await paginate(
+    Review,
+    {},
+    {
+      sort: { createdAt: -1 },
+      populate: 'user book',
+      select: 'rating comment user book createdAt'
+    }
+  );
+  return res.json(new ApiResponse(200, 'Reviews fetched successfully', { reviews, pagination }));
+};
+
 const deleteReview = async (req, res) => {
   const { id } = req.params;
 
@@ -100,6 +113,7 @@ const updateReview = async (req, res) => {
 module.exports = {
   createReview,
   getBookReviews,
+  getAllReviews,
   deleteReview,
   updateReview
 };

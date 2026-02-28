@@ -53,7 +53,8 @@ const orderPlacement = async (userId, shippingDetails, paymentMethod) => {
     return order;
   } catch (error) {
     await session.abortTransaction();
-    throw new ApiError(500, 'Failed to place order', error.message);
+    if (error instanceof ApiError) throw error;
+    throw new ApiError(500, 'Failed to place order');
   } finally {
     session.endSession();
   }

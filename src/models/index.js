@@ -4,6 +4,7 @@ const Cart = require('./cart');
 const Category = require('./category');
 const Order = require('./order');
 const Review = require('./review');
+const User = require('./user');
 
 module.exports = {
   Author,
@@ -11,5 +12,6 @@ module.exports = {
   Cart,
   Category,
   Order,
-  Review
+  Review,
+  User
 };

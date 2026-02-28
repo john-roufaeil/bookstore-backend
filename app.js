@@ -8,7 +8,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:4200', // Angular dev server
-      'https://your-frontend.vercel.app' // TODO: replace with your actual Vercel frontend URL after deploying
+      'https://your-frontend.vercel.app', // TODO: replace with your actual Vercel frontend URL after deploying
+      'https://res.cloudinary.com'
     ],
     credentials: true
   })

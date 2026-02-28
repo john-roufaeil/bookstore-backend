@@ -262,10 +262,10 @@ This project was built by a team of 4 as part of our ITI training program.
 
 | Member | Responsibilities |
 |--------|-----------------|
-| **Person 1** | Auth module, middleware (authenticate, authorize, error handler), utilities (ApiError), DB config |
-| **Person 2** | Books & Categories modules (routes, controllers, schemas) |
-| **Person 3** | Cart & Orders modules, ApiResponse, pagination utility, rate limiter, logger, backend deployment |
-| **Person 4** | Authors & Reviews modules, Cloudinary upload integration |
+| **Mohamed Khaled** | Auth module, middleware (authenticate, authorize, error handler), utilities (ApiError), DB config |
+| **Rana Mohamed** | Books & Categories modules (routes, controllers, schemas) |
+| **Salma Yasser** | Cart & Orders modules, ApiResponse, pagination utility, rate limiter, logger, backend deployment |
+| **John Roufail** | Authors & Reviews modules, Cloudinary upload integration |
 
 ---
 

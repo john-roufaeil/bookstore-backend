@@ -17,7 +17,7 @@ const errorHandler = (err, req, res, _next) => {
     }
     devError(err, res);
   } else {
-    let error = {...err, message: err.message};
+    let error = { ...err, message: err.message };
     if (error.name === 'CastError') {
       error = handleCastErrorDB(error);
     } else if (error.code === 11000) {

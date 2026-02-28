@@ -31,4 +31,4 @@ const updateProfileSchema = Joi.object({
   })
 }).min(1);
 
-module.exports = {registerSchema, loginSchema, updateProfileSchema};
+module.exports = { registerSchema, loginSchema, updateProfileSchema };

@@ -5,7 +5,12 @@ const placeOrderSchema = joi.object({
     fullName: joi.string().required(),
     address: joi.string().required(),
     city: joi.string().required(),
-    phone: joi.string().required()
+    phone: joi.string()
+      .pattern(/^\+?\d{11,15}$/)
+      .required()
+      .messages({
+        'string.pattern.base': 'Phone number is not valid'
+      })
   }).required(),
   paymentMethod: joi.string().valid('COD', 'credit_card').default('COD')
 });

@@ -11,13 +11,24 @@ const {
 const errorHandler = (err, req, res, _next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
+
+  // Handle DNS/Connectivity errors
+  if (
+    ['EAI_AGAIN', 'ENOTFOUND', 'ECONNREFUSED', 'ETIMEDOUT'].includes(err.code)
+  ) {
+    err = new ApiError(
+      503,
+      'Database connection failed. Please check your internet connection.'
+    );
+  }
+
   if (process.env.NODE_ENV === 'development') {
     if (err.name === 'ValidationError') {
       err = handleValidationErrorDB(err);
     }
     devError(err, res);
   } else {
-    let error = { ...err, message: err.message };
+    let error = {...err, message: err.message};
     if (error.name === 'CastError') {
       error = handleCastErrorDB(error);
     } else if (error.code === 11000) {

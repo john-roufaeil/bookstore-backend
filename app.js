@@ -7,8 +7,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      'http://localhost:4200', // Angular dev server
-      'https://your-frontend.vercel.app' // TODO: replace with your actual Vercel frontend URL after deploying
+      'http://localhost:4200',
+      'https://iti-bookstore.vercel.app'
     ],
     credentials: true
   })

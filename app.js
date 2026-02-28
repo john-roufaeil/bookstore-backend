@@ -8,7 +8,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:4200',
-      'https://iti-bookstore.vercel.app'
+      'https://iti-bookstore.vercel.app',
+      'https://res.cloudinary.com'
     ],
     credentials: true
   })
